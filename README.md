@@ -2,7 +2,7 @@
 
 ## Overview
 
-This plugin allows you to configure specific users to view only projects where they are members. Users with this setting enabled will not see public projects unless they are explicitly added as project members. You can use this plugin if you want to hide public projects from specific users.
+This plugin allows you to configure specific users to view only projects where they are members. Users with this setting enabled will not be able to see public projects where they are not members. You can use this plugin if you want to hide public projects from specific users.
 
 **⚠️Caution:** This plugin customizes Redmine's permission logic. If misconfigured or malfunctioning, it may cause unintended information disclosure. Please use with caution and test thoroughly before deploying in production environments.
 
@@ -46,6 +46,7 @@ This plugin allows you to configure specific users to view only projects where t
 #### Step 1: Add a boolean custom field to users
 
 Settings example:
+
 ![](docs/images/custom_field_settings.png)
 
 ##### Note:
@@ -58,7 +59,8 @@ By making the custom field read-only (by unchecking `Editable`), only administra
 
 #### Step 3: Configure access rules in your Redmine user settings
 
-Select which users should only see projects they are members of.
+Enable the checkbox you added in Step 1 for users who should only see projects they are members of.
+
 ![](docs/images/user_settings.png)
 
 ## Requirements

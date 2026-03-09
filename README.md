@@ -1,4 +1,4 @@
-# Redmine Member Only Projects Plugin
+# Redmine Member Only Projects
 
 ## Overview
 
@@ -11,7 +11,6 @@ This plugin allows you to configure specific users to view only projects where t
 ## Features
 
 - **Member-only visibility**: Restrict selected users to see only projects where they are members
-- **Works with all settings**: Functions correctly whether Redmine requires authentication or allows anonymous access
 - **Flexible configuration**: You can enable or disable this restriction for each user via a custom field
 - **No DB migration**: Uses custom fields, so no plugin-specific tables are created
 

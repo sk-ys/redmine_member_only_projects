@@ -2,4 +2,3 @@ en:
   member_only_projects:
     label_member_only_projects: "Member only projects"
     label_member_only_projects_description: "When enabled, this user can only see projects they are a member of"
-    label_member_only_projects_no_settings: "No plugin-level settings required. Enable the member-only flag per user in Administration → Users → Edit → Preferences."

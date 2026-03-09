@@ -2,4 +2,3 @@ ja:
   member_only_projects:
     label_member_only_projects: "メンバーのみのプロジェクト"
     label_member_only_projects_description: "有効にすると、このユーザーはメンバーであるプロジェクトのみを表示できます"
-    label_member_only_projects_no_settings: "プラグインレベルの設定は不要です。管理 → ユーザー → 編集 → 設定から、ユーザーごとにメンバー限定フラグを有効にしてください。"

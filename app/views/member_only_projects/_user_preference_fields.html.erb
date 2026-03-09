@@ -1,5 +1,5 @@
 <p>
-  <%= hidden_field_tag 'pref[member_only_projects]', '0' %>
+  <%= hidden_field_tag 'pref[member_only_projects]', '0', id: nil %>
   <%= check_box_tag 'pref[member_only_projects]', '1',
       user.pref[:member_only_projects].to_s == '1',
       id: 'pref_member_only_projects' %>

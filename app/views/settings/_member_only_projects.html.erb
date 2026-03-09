@@ -1,5 +1,9 @@
 <p>
-  <label><%= l(:label_user_cf_id, scope: :member_only_projects) %></label>
-  <%= number_field_tag 'settings[user_cf_id]', @settings['user_cf_id'], size: 8, min: 0, step: 1 %>
-  <br/><small><%= l(:label_user_cf_id_description, scope: :member_only_projects) %></small>
+  <label><%= l(:label_group_id, scope: :member_only_projects) %></label>
+  <%= select_tag 'settings[group_id]',
+        options_for_select(
+          [['', '']] + Group.sorted.map { |g| [g.name, g.id.to_s] },
+          @settings['group_id'].to_s
+        ) %>
+  <br/><small><%= l(:label_group_id_description, scope: :member_only_projects) %></small>
 </p>

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This plugin allows you to configure specific users to view only projects where they are members. Users with this setting enabled will not be able to see public projects where they are not members. You can use this plugin if you want to hide public projects from specific users.
+This plugin allows you to configure specific users to view only projects where they are members. Users who belong to the designated group will not be able to see public projects where they are not members. You can use this plugin if you want to hide public projects from specific users.
 
 **⚠️Caution:** This plugin customizes Redmine's permission logic. If misconfigured or malfunctioning, it may cause unintended information disclosure. Please use with caution and test thoroughly before deploying in production environments.
 
@@ -11,8 +11,8 @@ This plugin allows you to configure specific users to view only projects where t
 ## Features
 
 - **Member-only visibility**: Restrict selected users to see only projects where they are members
-- **Flexible configuration**: You can enable or disable this restriction for each user via a custom field
-- **No DB migration**: Uses custom fields, so no plugin-specific tables are created
+- **Group-based configuration**: Flag users by adding them to a Redmine group — no custom fields required
+- **No DB migration**: Uses built-in Redmine groups, so no plugin-specific tables are created
 
 ## Installation
 
@@ -42,25 +42,17 @@ This plugin allows you to configure specific users to view only projects where t
 
 ### Setup Steps
 
-#### Step 1: Add a boolean custom field to users
+#### Step 1: Create a group in Redmine
 
-Settings example:
+Go to **Administration → Groups** and create a new group (e.g. `Member Only Users`).
 
-![](docs/images/custom_field_settings.png)
+#### Step 2: Open the plugin settings page and select the group
 
-##### Note:
+Go to **Administration → Plugins → Redmine Member Only Projects → Configure** and select the group you created in Step 1.
 
-By making the custom field read-only (by unchecking `Editable`), only administrators will be able to change this setting.
+#### Step 3: Add users to the group
 
-#### Step 2: Open the plugin settings page and enter the custom field ID
-
-![](docs/images/plugin_settings.png)
-
-#### Step 3: Configure access rules in your Redmine user settings
-
-Enable the checkbox you added in Step 1 for users who should only see projects they are members of.
-
-![](docs/images/user_settings.png)
+Add users who should only see projects they are members of to the group selected in Step 2.
 
 ## Requirements
 

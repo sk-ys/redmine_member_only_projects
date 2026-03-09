@@ -17,20 +17,15 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
     @public_project = Project.find_by(is_public: true)
     @private_project = Project.find_by(is_public: false)
 
-    # Create a user custom field for member_only flag
-    @custom_field = UserCustomField.create!(
-      name: 'member_only',
-      field_format: 'bool',
-      is_required: false,
-      visible: true
-    )
+    # Create a group for the member_only flag
+    @group = Group.create!(name: 'member_only_group')
 
-    # Configure the plugin to use this custom field
-    Setting.plugin_redmine_member_only_projects = { 'user_cf_id' => @custom_field.id.to_s }
+    # Configure the plugin to use this group
+    Setting.plugin_redmine_member_only_projects = { 'group_id' => @group.id.to_s }
 
-    # Flag the user as member_only via the custom field
-    @user.custom_field_values = { @custom_field.id => '1' }
-    @user.save!
+    # Add the user to the group to flag as member_only
+    @group.users << @user
+    @user.reload
 
     # Set login_required to true for all tests
     Setting.login_required = '1'
@@ -38,7 +33,7 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
 
   def teardown
     # Clean up and restore original setting
-    @custom_field&.destroy
+    @group&.destroy
     Setting.login_required = @original_login_required
     Setting.plugin_redmine_member_only_projects = @original_plugin_setting
   end

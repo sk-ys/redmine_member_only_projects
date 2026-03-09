@@ -1,4 +1,4 @@
 en:
   member_only_projects:
-    label_user_cf_id: "User Custom Field ID (boolean)"
-    label_user_cf_id_description: "Example: The ID of a boolean custom field for 'User' created in Administration → Custom Fields"
+    label_group_id: "Member-Only Group"
+    label_group_id_description: "Select the group whose members are restricted to viewing only projects they belong to"

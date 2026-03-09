@@ -1,4 +1,4 @@
 ja:
   member_only_projects:
-    label_member_only_projects: "メンバーのみのプロジェクト"
-    label_member_only_projects_description: "有効にすると、このユーザーはメンバーであるプロジェクトのみを表示できます"
+    label_member_only_projects: "メンバーとなっているプロジェクトのみを表示"
+    label_member_only_projects_description: "有効にすると、このユーザーはメンバーとなっているプロジェクトのみを表示できます"

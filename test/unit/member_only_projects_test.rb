@@ -8,7 +8,6 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
   def setup
     # Save original setting
     @original_login_required = Setting.login_required
-    @original_plugin_setting = Setting.plugin_redmine_member_only_projects
 
     # Use 'someone' user who is not a member of any project (from fixtures)
     @user = User.find_by(login: 'someone') # User who does not belong to any project
@@ -17,30 +16,19 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
     @public_project = Project.find_by(is_public: true)
     @private_project = Project.find_by(is_public: false)
 
-    # Create a user custom field for member_only flag
-    @custom_field = UserCustomField.create!(
-      name: 'member_only',
-      field_format: 'bool',
-      is_required: false,
-      visible: true
-    )
-
-    # Configure the plugin to use this custom field
-    Setting.plugin_redmine_member_only_projects = { 'user_cf_id' => @custom_field.id.to_s }
-
-    # Flag the user as member_only via the custom field
-    @user.custom_field_values = { @custom_field.id => '1' }
-    @user.save!
+    # Flag the user as member_only via UserPreference
+    @user.pref[:member_only_projects] = '1'
+    @user.pref.save!
 
     # Set login_required to true for all tests
     Setting.login_required = '1'
   end
 
   def teardown
-    # Clean up and restore original setting
-    @custom_field&.destroy
+    # Restore original settings
+    @user.pref[:member_only_projects] = nil
+    @user.pref.save!
     Setting.login_required = @original_login_required
-    Setting.plugin_redmine_member_only_projects = @original_plugin_setting
   end
 
   test 'member_only user should not see public project unless member (login_required=true)' do
@@ -85,6 +73,57 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
     # Anonymous users should see public projects regardless of the plugin
     # (the plugin only affects non-anonymous, non-admin users with the flag set)
     assert @anonymous.allowed_to?(:view_project, @public_project)
+  end
+
+  test 'user without member_only flag is not affected' do
+    user = User.new(
+      login: 'member_only_test_plain',
+      firstname: 'Plain',
+      lastname: 'User',
+      mail: 'plain_user@example.com',
+      language: 'en'
+    )
+    user.password = 'password'
+    user.password_confirmation = 'password'
+    user.save!
+    user.pref[:member_only_projects] = nil
+    user.pref.save!
+
+    assert_not MemberOnlyProjects::UserFlag.member_only?(user),
+      "User without flag should not be member_only"
+  ensure
+    user.destroy if user&.persisted?
+  end
+
+  test 'member_only_projects accessor persists and is readable by UserFlag' do
+    user = User.new(
+      login: 'member_only_accessor_test',
+      firstname: 'Accessor',
+      lastname: 'Test',
+      mail: 'accessor_test@example.com',
+      language: 'en'
+    )
+    user.password = 'password'
+    user.password_confirmation = 'password'
+    user.save!
+
+    # Set flag via the accessor (code path used when the checkbox is saved from the user edit form)
+    user.pref.member_only_projects = '1'
+    user.pref.save!
+    user.reload
+
+    assert MemberOnlyProjects::UserFlag.member_only?(user),
+      "member_only? should return true after setting via accessor"
+
+    # Clear via accessor
+    user.pref.member_only_projects = '0'
+    user.pref.save!
+    user.reload
+
+    assert_not MemberOnlyProjects::UserFlag.member_only?(user),
+      "member_only? should return false after clearing via accessor"
+  ensure
+    user.destroy if user&.persisted?
   end
 
   test 'member_only user can see issues in member projects when login_required=on' do

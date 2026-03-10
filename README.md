@@ -11,8 +11,8 @@ This plugin allows you to configure specific users to view only projects where t
 ## Features
 
 - **Member-only visibility**: Restrict selected users to see only projects where they are members
-- **Flexible configuration**: You can enable or disable this restriction for each user via a custom field
-- **No DB migration**: Uses custom fields, so no plugin-specific tables are created
+- **Flexible configuration**: You can enable or disable this restriction for each user via a user preference
+- **No DB migration**: Uses Redmine's built-in UserPreference, so no plugin-specific tables are created
 
 ## Installation
 
@@ -42,23 +42,9 @@ This plugin allows you to configure specific users to view only projects where t
 
 ### Setup Steps
 
-#### Step 1: Add a boolean custom field to users
+#### Step 1: Enable the "Member only projects" preference for a user
 
-Settings example:
-
-![](docs/images/custom_field_settings.png)
-
-##### Note:
-
-By making the custom field read-only (by unchecking `Editable`), only administrators will be able to change this setting.
-
-#### Step 2: Open the plugin settings page and enter the custom field ID
-
-![](docs/images/plugin_settings.png)
-
-#### Step 3: Configure access rules in your Redmine user settings
-
-Enable the checkbox you added in Step 1 for users who should only see projects they are members of.
+Go to **Administration → Users**, open a user's edit page, and check **"Member only projects"** in the Preferences section.
 
 ![](docs/images/user_settings.png)
 

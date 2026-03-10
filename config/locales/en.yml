@@ -1,4 +1,4 @@
 en:
   member_only_projects:
-    label_user_cf_id: "User Custom Field ID (boolean)"
-    label_user_cf_id_description: "Example: The ID of a boolean custom field for 'User' created in Administration → Custom Fields"
+    label_member_only_projects: "Only show projects the user is a member of"
+    label_member_only_projects_description: "When enabled, this user can only see projects they are a member of"

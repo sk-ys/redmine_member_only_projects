@@ -1,0 +1,10 @@
+<p>
+  <%= hidden_field_tag 'pref[member_only_projects]', '0', id: nil %>
+  <%= check_box_tag 'pref[member_only_projects]', '1',
+      user.pref[:member_only_projects].to_s == '1',
+      id: 'pref_member_only_projects' %>
+  <label for="pref_member_only_projects">
+    <%= l(:label_member_only_projects, scope: :member_only_projects) %>
+  </label>
+  <br/><small><%= l(:label_member_only_projects_description, scope: :member_only_projects) %></small>
+</p>

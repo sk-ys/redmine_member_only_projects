@@ -1,4 +1,4 @@
 ja:
   member_only_projects:
-    label_user_cf_id: "ユーザーカスタムフィールド ID（真偽値）"
-    label_user_cf_id_description: "例: 管理→カスタムフィールドで作成した「ユーザー」用の真偽値フィールドID"
+    label_member_only_projects: "メンバーとなっているプロジェクトのみを表示"
+    label_member_only_projects_description: "有効にすると、このユーザーはメンバーとなっているプロジェクトのみを表示できます"

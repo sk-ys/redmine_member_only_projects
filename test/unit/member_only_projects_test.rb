@@ -76,7 +76,6 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
   end
 
   test 'user without member_only flag is not affected' do
-    # Create a dedicated non-admin user without the member_only flag
     user = User.new(
       login: 'member_only_test_plain',
       firstname: 'Plain',
@@ -92,6 +91,37 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
 
     assert_not MemberOnlyProjects::UserFlag.member_only?(user),
       "User without flag should not be member_only"
+  ensure
+    user.destroy if user&.persisted?
+  end
+
+  test 'member_only_projects accessor persists and is readable by UserFlag' do
+    user = User.new(
+      login: 'member_only_accessor_test',
+      firstname: 'Accessor',
+      lastname: 'Test',
+      mail: 'accessor_test@example.com',
+      language: 'en'
+    )
+    user.password = 'password'
+    user.password_confirmation = 'password'
+    user.save!
+
+    # Set flag via the accessor (code path used when the checkbox is saved from the user edit form)
+    user.pref.member_only_projects = '1'
+    user.pref.save!
+    user.reload
+
+    assert MemberOnlyProjects::UserFlag.member_only?(user),
+      "member_only? should return true after setting via accessor"
+
+    # Clear via accessor
+    user.pref.member_only_projects = '0'
+    user.pref.save!
+    user.reload
+
+    assert_not MemberOnlyProjects::UserFlag.member_only?(user),
+      "member_only? should return false after clearing via accessor"
   ensure
     user.destroy if user&.persisted?
   end

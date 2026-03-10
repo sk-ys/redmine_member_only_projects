@@ -51,6 +51,29 @@
 
 - Redmine 6 以上
 
+## カスタムフィールド方式 (v0.x) からのアップグレード
+
+以前のバージョンでユーザーを boolean 型の `UserCustomField` でマークしていた場合、アップグレード前に既存のフラグを `UserPreference` に移行する必要があります。古いカスタムフィールドを削除する**前**に、Redmine の Rails コンソールで以下のスクリプトを実行してください。
+
+```ruby
+cf_id = Setting.plugin_redmine_member_only_projects['user_cf_id'].to_i
+if cf_id > 0 && (cf = UserCustomField.find_by(id: cf_id))
+  CustomValue.where(customized_type: 'Principal', custom_field: cf, value: '1').each do |cv|
+    user = User.find_by(id: cv.customized_id)
+    next unless user
+
+    user.pref[:member_only_projects] = '1'
+    user.pref.save!
+    puts "Migrated user ##{user.id} (#{user.login})"
+  end
+  puts "Migration complete."
+else
+  puts "Custom field not found — nothing to migrate."
+end
+```
+
+スクリプト実行後、プラグインを更新し（例: `git pull`）、Redmine を再起動してください。その後、古いカスタムフィールドとプラグイン設定は任意で削除できます。
+
 ## ライセンス
 
 このプラグインは GPLv2 ライセンスで公開されています。

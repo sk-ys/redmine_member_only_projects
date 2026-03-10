@@ -48,34 +48,9 @@ Go to **Administration → Users**, open a user's edit page, and check **"Member
 
 ![](docs/images/user_settings.png)
 
-That's all — no custom fields or plugin-level settings are required.
-
 ## Requirements
 
 - Redmine 6+
-
-## Upgrading from the Custom Field method (v0.x)
-
-If you were previously using the plugin with a boolean `UserCustomField` to mark users, you need to migrate existing flags to `UserPreference` before upgrading. Run the following script in the Redmine Rails console **before** removing the old custom field:
-
-```ruby
-cf_id = Setting.plugin_redmine_member_only_projects['user_cf_id'].to_i
-if cf_id > 0 && (cf = UserCustomField.find_by(id: cf_id))
-  CustomValue.where(customized_type: 'Principal', custom_field: cf, value: '1').each do |cv|
-    user = User.find_by(id: cv.customized_id)
-    next unless user
-
-    user.pref[:member_only_projects] = '1'
-    user.pref.save!
-    puts "Migrated user ##{user.id} (#{user.login})"
-  end
-  puts "Migration complete."
-else
-  puts "Custom field not found — nothing to migrate."
-end
-```
-
-After running the script, update the plugin (e.g. `git pull`), restart Redmine, and optionally remove the old custom field and plugin setting.
 
 ## License
 

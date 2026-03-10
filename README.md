@@ -42,9 +42,9 @@ This plugin allows you to configure specific users to view only projects where t
 
 ### Setup Steps
 
-#### Step 1: Enable the "Member only projects" preference for a user
+#### Step 1: Enable the "Only show projects the user is a member of" preference for a user
 
-Go to **Administration → Users**, open a user's edit page, and check **"Member only projects"** in the Preferences section.
+Go to **Administration → Users**, open a user's edit page, and check **"Only show projects the user is a member of"** in the Preferences section.
 
 ![](docs/images/user_settings.png)
 

@@ -76,15 +76,24 @@ class MemberOnlyProjectsTest < ActiveSupport::TestCase
   end
 
   test 'user without member_only flag is not affected' do
-    # Use 'jsmith' which is a standard Redmine fixture user (non-admin, no member_only flag)
-    user = User.find_by(login: 'jsmith')
-    skip 'jsmith fixture user not found' unless user && !user.admin?
-
+    # Create a dedicated non-admin user without the member_only flag
+    user = User.new(
+      login: 'member_only_test_plain',
+      firstname: 'Plain',
+      lastname: 'User',
+      mail: 'plain_user@example.com',
+      language: 'en'
+    )
+    user.password = 'password'
+    user.password_confirmation = 'password'
+    user.save!
     user.pref[:member_only_projects] = nil
     user.pref.save!
 
     assert_not MemberOnlyProjects::UserFlag.member_only?(user),
       "User without flag should not be member_only"
+  ensure
+    user.destroy if user&.persisted?
   end
 
   test 'member_only user can see issues in member projects when login_required=on' do
